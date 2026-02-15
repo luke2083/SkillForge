@@ -12,6 +12,5 @@ with Session(engine) as session:
         select(Enrollment).options(joinedload(Enrollment.course), joinedload(Enrollment.user))
     ).scalars().first()
 
-    print(e.course)
     print(e.user)
     
