@@ -53,7 +53,7 @@ class Enrollment(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), primary_key=True)
     course_id: Mapped[int] = mapped_column(ForeignKey("courses.id"), primary_key=True)
     enrolled_at: Mapped[datetime] = mapped_column(server_default=func.now())
-    progress_percent: Mapped[int] = mapped_column(Integer)  
+    progress_percent: Mapped[int] = mapped_column(Integer, default=0)  
     is_completed: Mapped[bool] = mapped_column(default=False)
     rating: Mapped[int] = mapped_column(nullable=True)
 
