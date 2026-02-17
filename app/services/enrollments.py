@@ -1,0 +1,33 @@
+from ..repositories.enrollments import EnrollmentRepository
+from ..models import Enrollment
+
+
+class EnrollmentService:
+    def __init__(self, repository: EnrollmentRepository) -> None:
+        self.repository = repository
+
+    def create_enrollment(self, user_id: int, course_id: int) -> Enrollment:
+        enrollment = self.repository.get_enrollment(user_id, course_id)
+
+        if not enrollment:
+            enrollment = self.repository.create_enrollment(user_id, course_id)
+
+        return enrollment
+    
+    def get_all_enrollment_for_user(self, user_id: int) -> list[Enrollment] | None:
+        enrollments = self.repository.get_all_enrollments_for_user_id(user_id)
+        return enrollments
+    
+    def update_course_progress(self, user_id: int, course_id: int, progress: int) -> Enrollment | None:
+        if progress < 0 or progress > 100:
+            raise ValueError("Progress must be in the range 0 - 100")
+        
+        enrollment = self.repository.get_enrollment(user_id, course_id)
+
+        if progress < enrollment.progress_percent:
+            raise ValueError("New progress must be greater then current progress")
+        
+        enrollment.progress_percent = progress
+
+        return self.repository.update_enrollment(enrollment)
+    
