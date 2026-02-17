@@ -1,5 +1,7 @@
 /.venv
 /skillforge.db
-/app/__pycache__
-/migrations/__pycache__
-/migrations/versions/__pycache__
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
