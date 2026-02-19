@@ -1,6 +1,5 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import DatabaseError
 from ..models import User
 
 
@@ -16,15 +15,19 @@ class UserRepository:
         return user
     
     def delete_user(self, user_id: int) -> None:
-        try:
-            user = self.db.execute(
-                select(User).where(User.id == user_id)
-            ).scalars().first()
+        user = self.db.execute(
+            select(User).where(User.id == user_id)
+        ).scalars().first()
 
-            self.db.delete(user)
-            self.db.commit()
-        except DatabaseError:
-            raise
+        self.db.delete(user)
+        self.db.commit()
+
+    def update_user(self, user: User) -> User | None:
+        self.db.add(user)
+        self.db.commit()
+        self.db.refresh(user)
+
+        return user
 
     def get_user_by_id(self, user_id: int) -> User:
         user = self.db.execute(

@@ -1,3 +1,5 @@
+from app.exceptions import CourseNotCompletedError
+
 from ..repositories.enrollments import EnrollmentRepository
 from ..models import Enrollment
 
@@ -27,7 +29,20 @@ class EnrollmentService:
         if progress < enrollment.progress_percent:
             raise ValueError("New progress must be greater then current progress")
         
+        if progress == 100:
+            enrollment.is_completed = True
+        
         enrollment.progress_percent = progress
-
         return self.repository.update_enrollment(enrollment)
     
+    def rate_course(self, user_id: int, course_id: int, rating: int) -> Enrollment | None:
+        if rating < 1 or rating > 5:
+            raise ValueError("Rating must be in the range 1 - 5")
+        
+        enrollment = self.repository.get_enrollment(user_id, course_id)
+
+        if not enrollment.is_completed:
+            raise CourseNotCompletedError()
+        
+        enrollment.rating = rating
+        return self.repository.update_enrollment(enrollment)
