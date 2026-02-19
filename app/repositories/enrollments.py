@@ -18,11 +18,11 @@ class EnrollmentRepository:
         return enrollment
     
     def get_all_enrollments_for_user_id(self, user_id: int) -> list[Enrollment]:
-        enrollemnts = self.db.execute(
+        enrollments = self.db.execute(
             select(Enrollment).where(Enrollment.user_id == user_id).options(joinedload(Enrollment.course))
         ).scalars().all()
 
-        return enrollemnts
+        return enrollments
 
     def get_enrollment(self, user_id: int, course_id: int) -> Enrollment | None:
         enrollment = self.db.get(Enrollment, (user_id, course_id))

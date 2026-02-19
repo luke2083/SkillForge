@@ -1,8 +1,9 @@
 from app.exceptions import PriceTooLowError
 from app.repositories.courses import CourseRepository
-from app.models import Course
+from app.models import Course, UserRole
 from app.repositories.users import UserRepository
 from app.schemas import CourseCreate
+
 
 class CourseService:
     def __init__(self, course_repository: CourseRepository, user_repository: UserRepository) -> None:
@@ -12,7 +13,7 @@ class CourseService:
     def create_course(self, course: CourseCreate) -> Course | None:
         user = self.user_repository.get_user_by_id(course.instructor_id)
 
-        if user.role != "instructor":
+        if user.role != UserRole.INSTRUCTOR:
             raise ValueError("Only instructor can create the course")
         
         if course.price > 0 and course.price < 10:

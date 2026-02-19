@@ -1,5 +1,5 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from ..models import User
 
 
@@ -19,8 +19,9 @@ class UserRepository:
             select(User).where(User.id == user_id)
         ).scalars().first()
 
-        self.db.delete(user)
-        self.db.commit()
+        if user:
+            self.db.delete(user)
+            self.db.commit()
 
     def update_user(self, user: User) -> User | None:
         self.db.add(user)
@@ -31,7 +32,7 @@ class UserRepository:
 
     def get_user_by_id(self, user_id: int) -> User:
         user = self.db.execute(
-            select(User).where(User.id == user_id)
+            select(User).where(User.id == user_id).options(selectinload(User.taught_courses))
         ).scalars().first()
 
         return user
