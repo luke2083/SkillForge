@@ -17,15 +17,13 @@ class CourseRepository:
         return course
     
     def delete_course(self, course_id: int) -> None:
-        try:
-            course = self.db.execute(
-                select(Course).where(Course.id == course_id)
-            ).scalars().first()
+        course = self.db.execute(
+            select(Course).where(Course.id == course_id)
+        ).scalars().first()
             
+        if course:
             self.db.delete(course)
             self.db.commit()
-        except DatabaseError:
-            raise
 
     def get_course_by_id(self, course_id: int) -> Course:
         course = self.db.execute(

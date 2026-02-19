@@ -1,5 +1,5 @@
 from ..repositories.users import UserRepository
-from ..models import User
+from ..models import User, UserRole
 
 
 class UserService:
@@ -17,7 +17,7 @@ class UserService:
 
     def update_user(self, user_id: int, updated_user) -> User | None:
         current = self.repository.get_user_by_id(user_id)
-        if current.role == "instructor" and updated_user.role == "student" and current.taught_courses:
+        if current.role == UserRole.INSTRUCTOR and updated_user.role == UserRole.STUDENT and current.taught_courses:
             raise ValueError("Transition not available for instructor who managed any course")
         
         for attr, value in updated_user.model_dump(exclude_unset=True).items():

@@ -3,3 +3,9 @@ class CourseNotCompletedError(Exception):
 
 class PriceTooLowError(Exception):
     pass
+
+class InvalidProgressError(Exception):
+    pass
+
+class InvalidRatingError(Exception):
+    pass
