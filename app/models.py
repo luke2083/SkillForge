@@ -10,8 +10,8 @@ class Base(DeclarativeBase):
 
 
 class UserRole(enum.Enum):
-    STUDENT = "student"
-    INSTRUCTOR = "instructor"
+    STUDENT = "STUDENT"
+    INSTRUCTOR = "INSTRUCTOR"
 
 
 class User(Base):
