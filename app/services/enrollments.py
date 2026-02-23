@@ -20,6 +20,12 @@ class EnrollmentService:
         enrollments = self.repository.get_all_enrollments_for_user_id(user_id)
         return enrollments
     
+    def get_all_enrollments(self) -> list[Enrollment] | None:
+        return self.repository.get_all_enrollments()
+    
+    def get_enrollment(self, user_id: int, course_id: int) -> Enrollment | None:
+        return self.repository.get_enrollment(user_id, course_id)
+    
     def update_course_progress(self, user_id: int, course_id: int, progress: int) -> Enrollment | None:
         if progress < 0 or progress > 100:
             raise InvalidProgressError("Progress must be in the range 0 - 100")

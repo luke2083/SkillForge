@@ -11,8 +11,10 @@ class CourseCreate(BaseModel):
     price: Decimal
     instructor_id: int
     
+
 class CourseView(CourseCreate):
     id: int
+
 
 class CourseDetails(BaseModel):
     id: int
@@ -39,6 +41,12 @@ class UserDetails(UserView):
     taught_courses: list[CourseView] | None = None
 
 
+class EnrollmentCreate(BaseModel):
+    user_id: int
+    course_id: int
+    enrolled_at: datetime | None = None
+
+
 class EnrollmentView(BaseModel):
     user_id: int
     course_id: int
@@ -47,6 +55,11 @@ class EnrollmentView(BaseModel):
     is_completed: bool
     rating: int | None = None
     user: UserView
+
+
+class EnrollmentDetails(EnrollmentView):
+    course: CourseView | None = None
+
 
 class ModuleView(BaseModel):
     id: int
