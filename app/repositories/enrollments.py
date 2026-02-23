@@ -28,6 +28,11 @@ class EnrollmentRepository:
         enrollment = self.db.get(Enrollment, (user_id, course_id))
         return enrollment
     
+    def get_all_enrollments(self) -> list[Enrollment] | None:
+        return self.db.execute(
+            select(Enrollment).options(joinedload(Enrollment.user), joinedload(Enrollment.course))
+        ).scalars().all()
+    
     def update_enrollment(self, enrollment: Enrollment) -> Enrollment:
         self.db.add(enrollment)
         self.db.commit()

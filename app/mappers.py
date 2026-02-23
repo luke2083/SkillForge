@@ -1,5 +1,5 @@
-from app.models import Course, User
-from app.schemas import CourseCreate, CourseDetails, EnrollmentView, ModuleView, UserCreate, UserView
+from app.models import Course, Enrollment, User
+from app.schemas import CourseCreate, CourseDetails, CourseView, EnrollmentCreate, EnrollmentDetails, EnrollmentView, ModuleView, UserCreate, UserView
 
 
 def db_course_to_course_details_mapper(db_course: Course) -> CourseDetails:
@@ -61,4 +61,34 @@ def db_user_to_user_view_mapper(db_user: User) -> UserView:
         email=db_user.email,
         username=db_user.username,
         role=db_user.role
+    )
+
+def db_enrollemnt_to_enrollment_details_mapper(db_enroll: Enrollment) -> EnrollmentDetails:
+    return EnrollmentDetails(
+        user_id=db_enroll.user_id,
+        course_id=db_enroll.course_id,
+        enrolled_at=db_enroll.enrolled_at,
+        progress_percent=db_enroll.progress_percent,
+        is_completed=db_enroll.is_completed,
+        rating=db_enroll.rating,
+        user=UserView(
+            id=db_enroll.user.id,
+            email=db_enroll.user.email,
+            username=db_enroll.user.username,
+            role=db_enroll.user.role
+        ),
+        course=CourseView(
+            id=db_enroll.course.id,
+            title=db_enroll.course.title,
+            description=db_enroll.course.description,
+            price=db_enroll.course.price,
+            instructor_id=db_enroll.course.instructor_id
+        )
+    )
+
+def enrollment_create_to_db_enrollment(enrollment_create: EnrollmentCreate) -> Enrollment:
+    return Enrollment(
+        user_id=enrollment_create.user_id,
+        course_id=enrollment_create.course_id,
+        enrolled_at=enrollment_create.enrolled_at
     )
