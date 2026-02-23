@@ -1,7 +1,7 @@
 from app.exceptions import CourseNotCompletedError, InvalidProgressError, InvalidRatingError
 
-from ..repositories.enrollments import EnrollmentRepository
-from ..models import Enrollment
+from app.repositories.enrollments import EnrollmentRepository
+from app.models import Enrollment
 
 
 class EnrollmentService:

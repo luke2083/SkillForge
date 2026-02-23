@@ -1,5 +1,5 @@
-from app.models import Course
-from app.schemas import CourseCreate, CourseDetails, EnrollmentView, ModuleView, UserView
+from app.models import Course, User
+from app.schemas import CourseCreate, CourseDetails, EnrollmentView, ModuleView, UserCreate, UserView
 
 
 def db_course_to_course_details_mapper(db_course: Course) -> CourseDetails:
@@ -47,3 +47,18 @@ def course_create_to_db_course_mapper(course_create: CourseCreate) -> Course:
         instructor_id=course_create.instructor_id
     )
     
+
+def user_create_to_db_user_mapper(user_create: UserCreate) -> User:
+    return User(
+        email=user_create.email,
+        username=user_create.username,
+        role=user_create.role
+    )
+
+def db_user_to_user_view_mapper(db_user: User) -> UserView:
+    return UserView(
+        id=db_user.id,
+        email=db_user.email,
+        username=db_user.username,
+        role=db_user.role
+    )
