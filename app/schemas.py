@@ -24,11 +24,20 @@ class CourseDetails(BaseModel):
     modules: list["ModuleView"] | None = None
 
 
-class UserView(BaseModel):
-    id: int
+class UserCreate(BaseModel):
     email: str
     username: str
     role: UserRole
+
+
+class UserView(UserCreate):
+    id: int
+
+
+class UserDetails(UserView):
+    enrollments: list["EnrollmentView"] | None = None
+    taught_courses: list[CourseView] | None = None
+
 
 class EnrollmentView(BaseModel):
     user_id: int

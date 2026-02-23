@@ -1,5 +1,5 @@
-from ..repositories.users import UserRepository
-from ..models import User, UserRole
+from app.repositories.users import UserRepository
+from app.models import User, UserRole
 
 
 class UserService:
@@ -12,8 +12,8 @@ class UserService:
         
         return created_user
     
-    def delete_user(self, user_id: int) -> None:
-        self.repository.delete_user(user_id=user_id)
+    def delete_user(self, user_id: int) -> bool:
+        return self.repository.delete_user(user_id=user_id)
 
     def update_user(self, user_id: int, updated_user) -> User | None:
         current = self.repository.get_user_by_id(user_id)
@@ -27,4 +27,10 @@ class UserService:
 
     def get_user_by_id(self, user_id: int) -> User | None:
         return self.repository.get_user_by_id(user_id)
+    
+    def get_all_users(self) -> list[User] | None:
+        return self.repository.get_all_users()
+    
+    def get_user_by_email(self, email: str) -> User | None:
+        return self.repository.get_user_by_email(email)
     
